@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStaccatoStore } from "../store";
 
 export default function TextInput() {
   const { showInput, setShowInput, setRawText, rawText } = useStaccatoStore();
   const [draft, setDraft] = useState(rawText);
+
+  // Keep draft in sync when rawText changes externally (e.g. file upload)
+  useEffect(() => {
+    setDraft(rawText);
+  }, [rawText]);
 
   const handleSubmit = () => {
     if (draft.trim()) {
@@ -33,7 +38,7 @@ export default function TextInput() {
             exit={{ scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative z-10 w-full max-w-2xl p-8 rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
+            className="relative z-10 w-full max-w-2xl mx-4 sm:mx-auto p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
           >
             <h2 className="font-heading text-2xl text-primary-full mb-2 tracking-tight">
               Paste Your Text
@@ -47,7 +52,7 @@ export default function TextInput() {
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Paste or type text here..."
-              className="w-full h-56 p-4 rounded-2xl bg-bg-surface/60 text-primary text-sm font-ui
+              className="w-full h-44 sm:h-56 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-bg-surface/60 text-primary text-sm font-ui
                 leading-relaxed resize-none outline-none border border-secondary/10
                 focus:border-accent/30 transition-colors placeholder:text-muted"
               onKeyDown={(e) => {

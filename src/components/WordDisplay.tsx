@@ -47,8 +47,8 @@ export default function WordDisplay() {
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: -24, opacity: 0, scale: 0.96 }}
           transition={{ duration: 0.05, ease: "easeOut" }}
-          className="font-reader text-7xl sm:text-8xl lg:text-9xl tracking-tight select-none whitespace-nowrap
-            grid items-center"
+          className="font-reader text-7xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight select-none whitespace-nowrap
+            grid items-center px-4"
           style={{ gridTemplateColumns: "1fr auto 1fr" }}
         >
           <span className="text-primary text-right">{before}</span>

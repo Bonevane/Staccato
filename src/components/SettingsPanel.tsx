@@ -4,8 +4,8 @@ export default function SettingsPanel() {
   const { wpm, setWpm } = useStaccatoStore();
 
   return (
-    <section className="w-full max-w-2xl mx-auto px-6 py-20">
-      <h2 className="font-heading text-5xl text-primary-full mb-10 tracking-tight">
+    <section className="w-full max-w-2xl mx-auto px-5 sm:px-6 py-12 sm:py-20">
+      <h2 className="font-heading text-3xl sm:text-5xl text-primary-full mb-6 sm:mb-10 tracking-tight">
         Settings
       </h2>
 
@@ -43,12 +43,12 @@ export default function SettingsPanel() {
       </div>
 
       {/* WPM presets */}
-      <div className="flex gap-2 mt-6">
+      <div className="grid grid-cols-3 sm:flex gap-2 mt-6">
         {[150, 250, 300, 450, 600, 900].map((v) => (
           <button
             key={v}
             onClick={() => setWpm(v)}
-            className={`flex-1 py-2 rounded-xl text-xs font-ui transition-all cursor-pointer ${
+            className={`sm:flex-1 py-2 rounded-xl text-xs font-ui transition-all cursor-pointer ${
               wpm === v
                 ? "bg-accent/20 text-accent border border-accent/20"
                 : "text-secondary hover:text-primary hover:bg-secondary/10"
@@ -60,7 +60,7 @@ export default function SettingsPanel() {
       </div>
 
       {/* Shortcuts reference */}
-      <div className="mt-10 pt-6 border-t border-secondary/15">
+      <div className="mt-8 sm:mt-10 pt-6 border-t border-secondary/15 hidden sm:block">
         <p className="text-xs text-secondary mb-3 uppercase tracking-widest">
           Keyboard
         </p>

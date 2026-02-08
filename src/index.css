@@ -19,10 +19,13 @@ html {
   font-family: var(--font-ui);
   color: var(--color-primary);
   background-color: var(--color-bg);
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   min-height: 100dvh;
+  overscroll-behavior: none;
+  touch-action: manipulation;
 }
 
 #root {

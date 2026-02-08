@@ -8,7 +8,7 @@ export default function HUD() {
     <motion.div
       animate={{ opacity: isReading ? 0 : 1 }}
       transition={{ duration: 0.3 }}
-      className="fixed top-10 left-0 right-0 flex justify-center gap-12 font-ui text-sm tracking-widest text-secondary select-none z-30"
+      className="fixed top-10 left-0 right-0 flex justify-center gap-8 sm:gap-12 px-4 font-ui text-sm sm:text-sm tracking-widest text-secondary select-none z-30"
       style={{ pointerEvents: isReading ? "none" : "auto" }}
     >
       <span>

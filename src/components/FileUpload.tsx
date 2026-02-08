@@ -111,7 +111,7 @@ export default function FileUpload() {
             exit={{ scale: 0.95, y: 16 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative z-10 w-full max-w-lg p-8 rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
+            className="relative z-10 w-full max-w-lg mx-4 sm:mx-auto p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
           >
             <h2 className="font-heading text-2xl text-primary-full mb-2 tracking-tight">
               Upload Document
@@ -147,7 +147,7 @@ export default function FileUpload() {
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
               onClick={() => inputRef.current?.click()}
-              className="flex flex-col items-center justify-center gap-3 p-10 rounded-2xl
+              className="flex flex-col items-center justify-center gap-3 p-6 sm:p-10 rounded-2xl
                 border-2 border-dashed border-secondary/20 hover:border-accent/30
                 bg-bg-surface/40 hover:bg-bg-surface/60 transition-colors cursor-pointer"
             >

@@ -22,7 +22,7 @@ export default function InfoPanel() {
             exit={{ scale: 0.95, y: 16 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative z-10 w-full max-w-lg p-8 rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
+            className="relative z-10 w-full max-w-lg mx-4 sm:mx-auto p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-bg-elevated/90 backdrop-blur-xl"
           >
             <h2 className="font-heading text-2xl text-primary-full mb-4 tracking-tight">
               What is RSVP?
