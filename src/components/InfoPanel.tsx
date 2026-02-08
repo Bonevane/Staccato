@@ -8,6 +8,7 @@ export default function InfoPanel() {
     <AnimatePresence>
       {showInfo && (
         <motion.div
+          id="modal"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

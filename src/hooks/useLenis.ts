@@ -9,6 +9,7 @@ export default function useLenis() {
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      prevent: (node) => node.id === "modal",
     });
 
     lenisRef.current = lenis;

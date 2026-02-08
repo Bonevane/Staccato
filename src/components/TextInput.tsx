@@ -33,6 +33,7 @@ export default function TextInput() {
 
           {/* Panel */}
           <motion.div
+            id="modal"
             initial={{ scale: 0.95, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.95, y: 20 }}
