@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+# Staccato
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A minimalist Rapid Serial Visual Presentation (RSVP) engine designed for deep comprehension and high-velocity reading.
 
-Currently, two official plugins are available:
+Inspired by the precision of Monkeytype and the aesthetics of Material 3 Expressive, Staccato eliminates the physical strain of saccadic eye movements, allowing the mind to focus purely on the flow of information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Philosophy
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Traditional reading is limited by the mechanics of the human eye. We spend more time navigating white space and jumping between words than we do processing meaning.
 
-## Expanding the ESLint configuration
+Staccato centers every word on its **Optimal Recognition Point (ORP)**. By anchoring your gaze to a single focal point, the application leverages your brain's natural ability to decode visual language at speeds impossible with conventional linear text.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Precision Engine
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Vertical Staccato**: 50ms vertical transitions powered by Framer Motion.
+- **Anchor Highlighting**: Automatic ORP detection for instant word recognition.
+- **Intelligent Pacing**: Algorithms that respect the weight of punctuation and the complexity of long-form vocabulary.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Document Orchestration
+
+- **Universal Extraction**: Native parsing for PDF, DOCX, and plain text files.
+- **Condensation Mode**: Integrated extractive summarizer to distill long documents into their core essence.
+
+### Experience Design
+
+- **Inline Configuration**: Speed and settings are an organic extension of the reading room.
+- **Fluid Motion**: Lenis-based smooth scrolling and scroll-reactive UI transitions.
+- **Keyboard-First Interface**: Designed for a flow state, where every action is a single stroke away.
+
+---
+
+## Keyboard Reference
+
+| Key     | Action                          |
+| :------ | :------------------------------ |
+| `Space` | Play or Pause the engine        |
+| `R`     | Return to the beginning         |
+| `U`     | Upload a new document           |
+| `T`     | Open manual text input          |
+| `I`     | View information panel          |
+| `Esc`   | Toggle settings and speed panel |
+| `← / →` | Adjust speed by 50 WPM          |
+
+---
+
+## Technical Architecture
+
+The application is built on a modern, performance-oriented stack:
+
+- **Framework**: React 19 + TypeScript
+- **Build Tool**: Vite 7
+- **Styling**: Tailwind CSS v4
+- **Animation**: Framer Motion
+- **State**: Zustand
+- **Scrolling**: Lenis
+- **Parsing**: PDF.js & Mammoth.js
+
+---
+
+## Local Development
+
+Ensure you have [Node.js](https://nodejs.org/) installed on your system.
+
+```bash
+# Clone the repository
+git clone https://github.com/bonevane/staccato.git
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+_Designed for the modern reader. Built for speed._

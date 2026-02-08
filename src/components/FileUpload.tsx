@@ -1,24 +1,51 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FileText, Loader2 } from "lucide-react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useStaccatoStore } from "../store";
-import { extractSummary } from "../utils";
 
 type Mode = "extract" | "summarize";
 
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+async function summarizeWithGemini(text: string): Promise<string> {
+  if (!GEMINI_API_KEY) {
+    throw new Error("Gemini API key is not configured.");
+  }
+  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+
+  const prompt = `Summarize the following text for an RSVP speed-reading application. 
+  Create a detailed but flowing summary that captures the information fully. 
+  Output only the summarized text, avoiding lists or formatting. 
+  
+  Text to summarize:
+  ${text}`;
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  return response.text();
+}
+
 async function extractTextFromPdf(file: File): Promise<string> {
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  // Set worker source to a local path or a more reliable CDN version
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
   const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const loadingTask = pdfjsLib.getDocument({
+    data: arrayBuffer,
+    useWorkerFetch: false,
+    isEvalSupported: false,
+  });
+
+  const pdf = await loadingTask.promise;
   const pages: string[] = [];
 
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
-    const text = content.items
-      .map((item) => ("str" in item ? item.str : ""))
-      .join(" ");
+    const text = content.items.map((item: any) => item.str || "").join(" ");
     pages.push(text);
   }
 
@@ -33,9 +60,16 @@ async function extractTextFromDocx(file: File): Promise<string> {
 }
 
 export default function FileUpload() {
-  const { showUpload, setShowUpload, setRawText } = useStaccatoStore();
+  const {
+    showUpload,
+    setShowUpload,
+    setRawText,
+    lastSummaryTime,
+    setLastSummaryTime,
+  } = useStaccatoStore();
   const [mode, setMode] = useState<Mode>("extract");
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +77,24 @@ export default function FileUpload() {
   const handleFile = async (file: File) => {
     setError(null);
     setFileName(file.name);
+
+    if (mode === "summarize") {
+      if (file.size > 10 * 1024 * 1024) {
+        setError("Summarization is limited to files under 10MB.");
+        return;
+      }
+
+      const now = Date.now();
+      const secondsSinceLast = (now - lastSummaryTime) / 1000;
+      if (secondsSinceLast < 30) {
+        const remaining = Math.ceil(30 - secondsSinceLast);
+        setError(`Please wait ${remaining}s before another summary.`);
+        return;
+      }
+    }
+
     setLoading(true);
+    setStatus("Extracting text...");
 
     try {
       let text = "";
@@ -67,18 +118,30 @@ export default function FileUpload() {
         return;
       }
 
+      // ONLY call Gemini if the user explicitly selected Summarize mode
       if (mode === "summarize") {
-        const bullets = extractSummary(text, 8);
-        text = bullets.join(" ");
+        setStatus("Summarizing with Gemini...");
+        text = await summarizeWithGemini(text);
+        setLastSummaryTime(Date.now()); // Record success time
       }
 
       setRawText(text);
       setShowUpload(false);
       setFileName(null);
-    } catch {
-      setError("Failed to parse file. Please try a different one.");
+    } catch (err: any) {
+      console.error(err);
+      if (
+        mode === "summarize" &&
+        (err.message?.includes("API key") ||
+          err.message?.includes("configured"))
+      ) {
+        setError("Invalid or missing Gemini API key.");
+      } else {
+        setError("Failed to process file. Please try again.");
+      }
     } finally {
       setLoading(false);
+      setStatus("");
     }
   };
 
@@ -139,7 +202,7 @@ export default function FileUpload() {
             <p className="text-xs text-muted mb-6 font-ui">
               {mode === "extract"
                 ? "Load the full text from the document for reading."
-                : "Extract key sentences and load a condensed version."}
+                : "Extract key sentences and load a condensed version. Uses Gemini."}
             </p>
 
             {/* Drop zone */}
@@ -151,10 +214,16 @@ export default function FileUpload() {
                 border-2 border-dashed border-secondary/20 hover:border-accent/30
                 bg-bg-surface/40 hover:bg-bg-surface/60 transition-colors cursor-pointer"
             >
-              <span className="text-3xl">{loading ? "⏳" : "📄"}</span>
+              <span className="text-3xl">
+                {loading ? (
+                  <Loader2 className="w-10 h-10 text-accent animate-spin" />
+                ) : (
+                  <FileText className="w-10 h-10 text-secondary" />
+                )}
+              </span>
               <p className="text-sm text-secondary font-ui">
                 {loading
-                  ? "Parsing..."
+                  ? status
                   : fileName
                     ? fileName
                     : "Drop a file here or click to browse"}

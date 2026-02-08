@@ -33,6 +33,10 @@ export interface StaccatoState {
   setShowUpload: (v: boolean) => void;
   setShowInfo: (v: boolean) => void;
 
+  /* ── AI ── */
+  lastSummaryTime: number;
+  setLastSummaryTime: (time: number) => void;
+
   /* ── Helpers ── */
   getDelayMs: () => number;
   getWordDelay: (word: string) => number;
@@ -99,6 +103,10 @@ export const useStaccatoStore = create<StaccatoState>((set, get) => ({
   setShowInput: (v) => set({ showInput: v, isReading: false }),
   setShowUpload: (v) => set({ showUpload: v, isReading: false }),
   setShowInfo: (v) => set({ showInfo: v }),
+
+  /* ── AI ── */
+  lastSummaryTime: 0,
+  setLastSummaryTime: (time) => set({ lastSummaryTime: time }),
 
   /* ── Helpers ── */
   getDelayMs: () => {
